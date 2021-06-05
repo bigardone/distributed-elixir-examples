@@ -1,0 +1,2 @@
+defmodule GlobalBackgroundJob do
+end
