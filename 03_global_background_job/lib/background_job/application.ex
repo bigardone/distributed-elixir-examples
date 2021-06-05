@@ -9,12 +9,7 @@ defmodule GlobalBackgroundJob.Application do
   def start(_type, _args) do
     children = [
       {Cluster.Supervisor, [topologies(), [name: GlobalBackgroundJob.ClusterSupervisor]]},
-      {GlobalBackgroundJob.Singleton,
-       [
-         mod: GlobalBackgroundJob.DatabaseCleaner,
-         args: [timeout: :timer.seconds(5)],
-         name: DatabaseCleaner
-       ]}
+      {GlobalBackgroundJob.DatabaseCleaner.Starter, [timeout: :timer.seconds(2)]}
     ]
 
     opts = [strategy: :one_for_one, name: GlobalBackgroundJob.Supervisor]
