@@ -6,21 +6,25 @@
       <div class="rounded-full h-1 w-10/12 bg-gray-300 mb-4"></div>
     </div>
     <div class="flex flex-1 flex-col">
-      <div class="rounded-full h-1 cursor-pointer bg-gray-300 w-6/12 hover:bg-gray-400 mb-8"></div>
-      <div class="rounded-full h-1 cursor-pointer bg-gray-300 w-8/12 hover:bg-gray-400 mb-8"></div>
-      <div class="rounded-full h-1 cursor-pointer bg-gray-400 w-10/12 hover:bg-gray-400 mb-8"></div>
-      <div class="rounded-full h-1 cursor-pointer bg-gray-300 w-4/12 hover:bg-gray-400 mb-8"></div>
-      <div class="rounded-full h-1 cursor-pointer bg-gray-300 w-6/12 hover:bg-gray-400 mb-8"></div>
+      <div class="rounded-full h-2 cursor-pointer bg-gray-300 w-6/12 hover:bg-gray-400 mb-8"></div>
+      <div class="rounded-full h-2 cursor-pointer bg-gray-300 w-8/12 hover:bg-gray-400 mb-8"></div>
+      <div class="rounded-full h-2 cursor-pointer bg-gray-400 w-10/12 hover:bg-gray-400 mb-8"></div>
+      <div class="rounded-full h-2 cursor-pointer bg-gray-300 w-4/12 hover:bg-gray-400 mb-8"></div>
+      <div class="rounded-full h-2 cursor-pointer bg-gray-300 w-6/12 hover:bg-gray-400 mb-8"></div>
       <div class="rounded-full h-1 cursor-pointer bg-gray-300 w-8/12 hover:bg-gray-400 mb-8 mt-auto"></div>
     </div>
   </aside>
   <section class="flex-1">
-    <p class="alert alert-info" role="alert"
-                                phx-click="lv:clear-flash"
-                                phx-value-key="info"><%= live_flash(@flash, :info) %></p>
-    <p class="alert alert-danger" role="alert"
-                                  phx-click="lv:clear-flash"
-                                  phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+    <div
+      role="alert"
+      phx-click="lv:clear-flash"
+      phx-value-key="info"><%= live_flash(@flash, :info) %>
+      </div>
+      <div
+        role="alert"
+        phx-click="lv:clear-flash"
+        phx-value-key="error"><%= live_flash(@flash, :error) %>
+      </div>
     <%= @inner_content %>
   </section>
 </main>

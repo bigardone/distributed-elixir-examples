@@ -1,39 +1,45 @@
 defmodule DownloadManagerWeb.PageLive do
   use DownloadManagerWeb, :live_view
 
-  @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, query: "", results: %{})}
+  alias Phoenix.PubSub
+
+  @impl Phoenix.LiveView
+  def mount(_params, %{"user_id" => user_id}, socket) do
+    PubSub.subscribe(DownloadManager.PubSub, "download:#{user_id}")
+
+    download =
+      case DownloadManager.fetch_download(user_id) do
+        {:ok, download} ->
+          download
+
+        {:error, :not_found} ->
+          nil
+      end
+
+    {:ok, assign(socket, user_id: user_id, download: download)}
   end
 
-  @impl true
-  def handle_event("suggest", %{"q" => query}, socket) do
-    {:noreply, assign(socket, results: search(query), query: query)}
-  end
-
-  @impl true
-  def handle_event("search", %{"q" => query}, socket) do
-    case search(query) do
-      %{^query => vsn} ->
-        {:noreply, redirect(socket, external: "https://hexdocs.pm/#{query}/#{vsn}")}
+  @impl Phoenix.LiveView
+  def handle_event("request_download", _, socket) do
+    case DownloadManager.start_download(socket.assigns.user_id) do
+      {:ok, download} ->
+        {:noreply, assign(socket, download: download)}
 
       _ ->
-        {:noreply,
-         socket
-         |> put_flash(:error, "No dependencies found matching \"#{query}\"")
-         |> assign(results: %{}, query: query)}
+        {:noreply, put_flash(socket, :error, "Error creating download request")}
     end
   end
 
-  defp search(query) do
-    if not DownloadManagerWeb.Endpoint.config(:code_reloader) do
-      raise "action disabled when not in development"
-    end
+  def handle_event("delete_download", _, socket) do
+    download = socket.assigns.download
 
-    for {app, desc, vsn} <- Application.started_applications(),
-        app = to_string(app),
-        String.starts_with?(app, query) and not List.starts_with?(desc, ~c"ERTS"),
-        into: %{},
-        do: {app, vsn}
+    DownloadManager.delete_download(download)
+
+    {:noreply, assign(socket, download: nil)}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_info({:update, download}, socket) do
+    {:noreply, assign(socket, download: download)}
   end
 end

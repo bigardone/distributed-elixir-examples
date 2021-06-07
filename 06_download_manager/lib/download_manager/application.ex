@@ -7,10 +7,16 @@ defmodule DownloadManager.Application do
 
   def start(_type, _args) do
     children = [
+      {Cluster.Supervisor, [topologies(), [name: BackgroundJob.ClusterSupervisor]]},
       # Start the Telemetry supervisor
       DownloadManagerWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: DownloadManager.PubSub},
+      DownloadManager.HordeRegistry,
+      DownloadManager.HordeSupervisor,
+      DownloadManager.NodeObserver,
+      {DownloadManager.Download.Repo, []},
+
       # Start the Endpoint (http/https)
       DownloadManagerWeb.Endpoint
       # Start a worker by calling: DownloadManager.Worker.start_link(arg)
@@ -28,5 +34,13 @@ defmodule DownloadManager.Application do
   def config_change(changed, _new, removed) do
     DownloadManagerWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp topologies do
+    [
+      background_job: [
+        strategy: Cluster.Strategy.Gossip
+      ]
+    ]
   end
 end

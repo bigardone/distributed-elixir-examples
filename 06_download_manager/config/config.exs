@@ -23,6 +23,21 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Download repo configuration
+config :download_manager, DownloadManager.Download.Repo,
+  adapter: DownloadManager.Download.Repo.Nebulex
+
+# Download tracker worker configuration
+config :download_manager, DownloadManager.Download.Tracker.Worker,
+  adapter: DownloadManager.Download.Tracker.Worker.Fake
+
+config :download_manager, DownloadManager.Download.Repo,
+  gc_interval: :timer.hours(12),
+  max_size: 1_00_000,
+  allocated_memory: 2_000_000_000,
+  gc_cleanup_min_timeout: :timer.seconds(10),
+  gc_cleanup_max_timeout: :timer.minutes(10)
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
