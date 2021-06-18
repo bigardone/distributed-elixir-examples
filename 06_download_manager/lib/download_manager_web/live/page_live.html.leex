@@ -1,0 +1,30 @@
+<section class="px-6">
+  <header class="py-8 border-b border-gray-100">
+    <%= placeholder(height: 2, width: 3) %>
+  </header>
+  <div class="my-6 flex items-center gap-x-4">
+    <div class="bg-gray-100 h-8 w-44 rounded-md"></div>
+    <div class="bg-gray-100 h-8 w-44 rounded-md"></div>
+    <div class="bg-gray-100 h-8 w-44 rounded-md"></div>
+    <%= if is_nil(@download) do %>
+      <button phx-click="request_download" class="rounded text-purple-200 text-sm bg-purple-900 ml-auto h-8 px-6 flex items-center">Download PDF</button>
+    <% end %>
+  </div>
+  <div>
+    <div class="grid grid-cols-6 gap-x-4 border-b border-t border-gray-100 py-4">
+      <%= for _ <- 1..6 do %>
+        <%= placeholder(height: 2) %>
+      <% end %>
+      <div></div>
+    </div>
+    <div class="grid grid-cols-6 gap-x-4 py-4">
+      <%= for _ <- 1..60 do %>
+        <%= placeholder(height: 2, color: "bg-gray-300", class: "my-4") %>
+      <% end %>
+    </div>
+  </div>
+</section
+
+<%= if @download != nil do %>
+  <%= live_component DownloadManagerWeb.DownloadLiveComponent, download: @download %>
+<% end %>

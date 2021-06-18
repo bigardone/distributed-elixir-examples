@@ -1,0 +1,30 @@
+<main role="main" class="w-full flex">
+  <aside class="bg-gray-50 w-56 h-screen p-6 flex flex-col">
+    <div class="border-b border-gray-200 pb-4 mb-10">
+      <div class="rounded-full h-16 w-16 flex items-center justify-center bg-purple-500 mb-4"></div>
+      <div class="rounded-full h-2 w-8/12 bg-gray-400 mb-4"></div>
+      <div class="rounded-full h-1 w-10/12 bg-gray-300 mb-4"></div>
+    </div>
+    <div class="flex flex-1 flex-col">
+      <div class="rounded-full h-2 cursor-pointer bg-gray-300 w-6/12 hover:bg-gray-400 mb-8"></div>
+      <div class="rounded-full h-2 cursor-pointer bg-gray-300 w-8/12 hover:bg-gray-400 mb-8"></div>
+      <div class="rounded-full h-2 cursor-pointer bg-gray-400 w-10/12 hover:bg-gray-400 mb-8"></div>
+      <div class="rounded-full h-2 cursor-pointer bg-gray-300 w-4/12 hover:bg-gray-400 mb-8"></div>
+      <div class="rounded-full h-2 cursor-pointer bg-gray-300 w-6/12 hover:bg-gray-400 mb-8"></div>
+      <div class="rounded-full h-1 cursor-pointer bg-gray-300 w-8/12 hover:bg-gray-400 mb-8 mt-auto"></div>
+    </div>
+  </aside>
+  <section class="flex-1">
+    <div
+      role="alert"
+      phx-click="lv:clear-flash"
+      phx-value-key="info"><%= live_flash(@flash, :info) %>
+      </div>
+      <div
+        role="alert"
+        phx-click="lv:clear-flash"
+        phx-value-key="error"><%= live_flash(@flash, :error) %>
+      </div>
+    <%= @inner_content %>
+  </section>
+</main>
